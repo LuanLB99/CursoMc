@@ -1,7 +1,10 @@
 package com.curso.cursomc.resources;
 
 import com.curso.cursomc.domain.Category;
+import com.curso.cursomc.services.CategoryService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,16 +14,17 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/categories")
 public class CategoryResource {
-    @GetMapping
-    public List<Category> list(){
 
-        Category cat1 = new Category(1,"Informática");
-        Category cat2 = new Category(2,"Escritório");
+    final CategoryService service;
 
-        List<Category> categories = new ArrayList<Category>();
-        categories.add(cat1);
-        categories.add(cat2);
+    public CategoryResource(CategoryService service) {
+        this.service = service;
+    }
 
-        return categories;
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> find(@PathVariable Integer id){
+        Category category = service.search(id);
+        return ResponseEntity.ok().body(category);
+
     }
 }
