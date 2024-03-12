@@ -12,19 +12,23 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Entity
-public class Category implements Serializable {
+public class Product implements Serializable {
     @Serial
     private  static  final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Integer id;
-    private  String name;
+    private Integer id;
+    private String name;
+    private Double price;
 
-    @ManyToMany(mappedBy = "categories")
-    private List<Product> products = new ArrayList<>();
-    public Category(Integer id, String name) {
+    @ManyToMany
+    @JoinTable(name = "product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private List<Category> categories = new ArrayList<>();
+
+    public Product(Integer id, String name, Double price) {
         this.id = id;
         this.name = name;
+        this.price = price;
     }
 }
