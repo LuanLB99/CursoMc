@@ -1,13 +1,8 @@
 package com.curso.cursomc;
 
-import com.curso.cursomc.domain.Category;
-import com.curso.cursomc.domain.City;
-import com.curso.cursomc.domain.Product;
-import com.curso.cursomc.domain.State;
-import com.curso.cursomc.repositories.CategoryRepository;
-import com.curso.cursomc.repositories.CityRepository;
-import com.curso.cursomc.repositories.ProductRepository;
-import com.curso.cursomc.repositories.StateRepository;
+import com.curso.cursomc.domain.*;
+import com.curso.cursomc.domain.enums.ClientType;
+import com.curso.cursomc.repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,11 +17,18 @@ public class CursomcApplication implements CommandLineRunner {
 	final StateRepository stateRepository;
 	final CityRepository cityRepository;
 
-	public CursomcApplication(CategoryRepository categoryRepository, ProductRepository productRepository, StateRepository stateRepository, CityRepository cityRepository) {
+	final ClientRepository clientRepository;
+	final AddressRepository addressRepository;
+
+	public CursomcApplication(CategoryRepository categoryRepository, ProductRepository productRepository,
+							  StateRepository stateRepository, CityRepository cityRepository,
+							  ClientRepository clientRepository, AddressRepository addressRepository) {
 		this.categoryRepository = categoryRepository;
 		this.productRepository = productRepository;
 		this.stateRepository = stateRepository;
 		this.cityRepository = cityRepository;
+		this.clientRepository = clientRepository;
+		this.addressRepository = addressRepository;
 	}
 
 	public static void main(String[] args) {
@@ -65,5 +67,15 @@ public class CursomcApplication implements CommandLineRunner {
 
 		stateRepository.saveAll(Arrays.asList(st1,st2));
 		cityRepository.saveAll(Arrays.asList(cit1,cit2,cit3));
+
+
+		Client cli1 = new Client(null, "Maria Silva", "maria@gmail.com", "36378912377", ClientType.PESSOAFISICA);
+		cli1.getPhones().addAll(Arrays.asList("27363323", "93838393"));
+
+		Address add1 = new Address(null, "Rua das Flores","300", "Apto 203","Jardim", "38220834", cli1, cit1);
+		Address add2 = new Address(null, "Avenida Matos","105", "Sala 800","Centro", "38777012", cli1, cit2);
+		cli1.getAddress().addAll(Arrays.asList(add1,add2));
+		clientRepository.save(cli1);
+		addressRepository.saveAll(Arrays.asList(add1,add2));
 	}
 }
