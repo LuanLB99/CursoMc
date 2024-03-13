@@ -15,6 +15,7 @@ import java.util.Objects;
 public class ItemPK implements Serializable {
     @Serial
     private  static  final long serialVersionUID = 1L;
+
     @ManyToOne
     @JoinColumn(name = "purchase_order_id")
     private PurchaseOrder purchaseOrder;

@@ -1,5 +1,6 @@
 package com.curso.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import lombok.Data;
@@ -15,8 +16,10 @@ public class Item implements Serializable {
     @Serial
     private  static  final long serialVersionUID = 1L;
 
+    @JsonIgnore
     @EmbeddedId
     private  ItemPK id = new ItemPK();
+
     private Double discount;
     private Integer quantity;
     private Double price;
@@ -29,6 +32,7 @@ public class Item implements Serializable {
         this.price = price;
     }
 
+    @JsonIgnore
     public PurchaseOrder getPurchaseOrder(){
         return id.getPurchaseOrder();
     }

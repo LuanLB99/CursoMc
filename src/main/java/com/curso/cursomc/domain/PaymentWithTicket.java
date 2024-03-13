@@ -1,6 +1,7 @@
 package com.curso.cursomc.domain;
 
 import com.curso.cursomc.domain.enums.PaymentState;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,9 @@ import java.util.Date;
 public class PaymentWithTicket extends Payment{
     @Serial
     private  static  final long serialVersionUID = 1L;
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date expirationDate;
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date paymentDate;
 
     public PaymentWithTicket(Date expirationDate, Date paymentDate) {

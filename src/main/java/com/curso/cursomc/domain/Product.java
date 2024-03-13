@@ -1,6 +1,7 @@
 package com.curso.cursomc.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,7 @@ public class Product implements Serializable {
     @JoinTable(name = "product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "id.product")
     private Set<Item> items = new HashSet<>();
 
@@ -38,7 +40,7 @@ public class Product implements Serializable {
         this.name = name;
         this.price = price;
     }
-
+    @JsonIgnore
     public List<PurchaseOrder> getOrdersPurchase(){
         List<PurchaseOrder> list = new ArrayList<>();
         for(Item x : items){
