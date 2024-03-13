@@ -2,11 +2,13 @@ package com.curso.cursomc;
 
 import com.curso.cursomc.domain.*;
 import com.curso.cursomc.domain.enums.ClientType;
+import com.curso.cursomc.domain.enums.PaymentState;
 import com.curso.cursomc.repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 @SpringBootApplication
@@ -20,15 +22,21 @@ public class CursomcApplication implements CommandLineRunner {
 	final ClientRepository clientRepository;
 	final AddressRepository addressRepository;
 
+	final PurchaseOrderRepository purchaseOrderRepository;
+	final PaymentRepository paymentRepository;
+
 	public CursomcApplication(CategoryRepository categoryRepository, ProductRepository productRepository,
 							  StateRepository stateRepository, CityRepository cityRepository,
-							  ClientRepository clientRepository, AddressRepository addressRepository) {
+							  ClientRepository clientRepository, AddressRepository addressRepository,
+							  PurchaseOrderRepository purchaseOrderRepository, PaymentRepository paymentRepository) {
 		this.categoryRepository = categoryRepository;
 		this.productRepository = productRepository;
 		this.stateRepository = stateRepository;
 		this.cityRepository = cityRepository;
 		this.clientRepository = clientRepository;
 		this.addressRepository = addressRepository;
+		this.purchaseOrderRepository = purchaseOrderRepository;
+		this.paymentRepository = paymentRepository;
 	}
 
 	public static void main(String[] args) {
@@ -78,5 +86,18 @@ public class CursomcApplication implements CommandLineRunner {
 		clientRepository.save(cli1);
 		addressRepository.saveAll(Arrays.asList(add1,add2));
 
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		PurchaseOrder ped1 = new PurchaseOrder(null,dateFormat.parse("30/09/2017 10:32"), cli1, add1);
+		PurchaseOrder ped2 = new PurchaseOrder(null, dateFormat.parse("10/10/2017 19:35"), cli1, add2);
+
+		PaymentWithCard pay1 = new PaymentWithCard(null, PaymentState.PAID, ped1, 6);
+		ped1.setPayment(pay1);
+		PaymentWithTicket pay2 = new PaymentWithTicket(null, PaymentState.PENDING, ped2, dateFormat.parse("20/10/2017 00:00"), null);
+		ped2.setPayment(pay2);
+
+		cli1.getPurchaseOrders().addAll(Arrays.asList(ped1,ped2));
+
+		purchaseOrderRepository.saveAll(Arrays.asList(ped1,ped2));
+		paymentRepository.saveAll(Arrays.asList(pay1,pay2));
 	}
 }
