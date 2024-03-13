@@ -77,5 +77,6 @@ public class CursomcApplication implements CommandLineRunner {
 		cli1.getAddress().addAll(Arrays.asList(add1,add2));
 		clientRepository.save(cli1);
 		addressRepository.saveAll(Arrays.asList(add1,add2));
+
 	}
 }

@@ -1,8 +1,10 @@
 package com.curso.cursomc.domain;
 
 import com.curso.cursomc.domain.enums.ClientType;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serial;
@@ -14,6 +16,7 @@ import java.util.Set;
 
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode
 @Entity
 public class Client implements Serializable {
     @Serial
@@ -27,6 +30,7 @@ public class Client implements Serializable {
     private String cpfOrCnpj;
     private Integer type;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "client")
     private List<Address> address = new ArrayList<>();
 
