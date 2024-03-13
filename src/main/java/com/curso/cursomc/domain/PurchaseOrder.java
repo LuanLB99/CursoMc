@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -31,10 +34,18 @@ public class PurchaseOrder implements Serializable {
     @JoinColumn(name = "address_id")
     private Address address;
 
+    @OneToMany(mappedBy = "id.purchaseOrder")
+    private Set<Item> items = new HashSet<>();
+
     public PurchaseOrder(Integer id, Date instant, Client client, Address address) {
         this.id = id;
         this.instant = instant;
         this.client = client;
         this.address = address;
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(id);
     }
 }

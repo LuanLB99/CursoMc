@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -28,9 +30,20 @@ public class Product implements Serializable {
     @JoinTable(name = "product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories = new ArrayList<>();
 
+    @OneToMany(mappedBy = "id.product")
+    private Set<Item> items = new HashSet<>();
+
     public Product(Integer id, String name, Double price) {
         this.id = id;
         this.name = name;
         this.price = price;
+    }
+
+    public List<PurchaseOrder> getOrdersPurchase(){
+        List<PurchaseOrder> list = new ArrayList<>();
+        for(Item x : items){
+            list.add(x.getPurchaseOrder());
+        }
+        return list;
     }
 }

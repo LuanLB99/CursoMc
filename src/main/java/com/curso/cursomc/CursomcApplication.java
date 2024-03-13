@@ -25,10 +25,13 @@ public class CursomcApplication implements CommandLineRunner {
 	final PurchaseOrderRepository purchaseOrderRepository;
 	final PaymentRepository paymentRepository;
 
+	final OrderedItemRepository orderedItemRepository;
+
 	public CursomcApplication(CategoryRepository categoryRepository, ProductRepository productRepository,
 							  StateRepository stateRepository, CityRepository cityRepository,
 							  ClientRepository clientRepository, AddressRepository addressRepository,
-							  PurchaseOrderRepository purchaseOrderRepository, PaymentRepository paymentRepository) {
+							  PurchaseOrderRepository purchaseOrderRepository, PaymentRepository paymentRepository,
+							  OrderedItemRepository orderedItemRepository) {
 		this.categoryRepository = categoryRepository;
 		this.productRepository = productRepository;
 		this.stateRepository = stateRepository;
@@ -37,6 +40,7 @@ public class CursomcApplication implements CommandLineRunner {
 		this.addressRepository = addressRepository;
 		this.purchaseOrderRepository = purchaseOrderRepository;
 		this.paymentRepository = paymentRepository;
+		this.orderedItemRepository = orderedItemRepository;
 	}
 
 	public static void main(String[] args) {
@@ -99,5 +103,18 @@ public class CursomcApplication implements CommandLineRunner {
 
 		purchaseOrderRepository.saveAll(Arrays.asList(ped1,ped2));
 		paymentRepository.saveAll(Arrays.asList(pay1,pay2));
+
+		Item it1 = new Item(ped1, prod1, 0.00, 1, prod1.getPrice());
+		Item it2 = new Item(ped1, prod3, 0.00, 2, prod3.getPrice());
+		Item it3 = new Item(ped2, prod2, 100.00, 1, prod2.getPrice());
+
+		ped1.getItems().addAll(Arrays.asList(it1,it2));
+		ped2.getItems().addAll(Arrays.asList(it3));
+
+		prod1.getItems().addAll(Arrays.asList(it1));
+		prod2.getItems().addAll(Arrays.asList(it3));
+		prod3.getItems().addAll(Arrays.asList(it2));
+
+		orderedItemRepository.saveAll(Arrays.asList(it1,it2,it3));
 	}
 }
