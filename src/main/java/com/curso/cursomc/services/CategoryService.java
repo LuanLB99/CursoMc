@@ -7,6 +7,7 @@ import com.curso.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -39,6 +40,8 @@ public class CategoryService {
         }catch (DataIntegrityViolationException e){
             throw new DataIntegrityException("Não é possível excluir uma categoria com produtos associados");
         }
-
+    }
+    public List<Category> findAll(){
+        return repo.findAll();
     }
 }

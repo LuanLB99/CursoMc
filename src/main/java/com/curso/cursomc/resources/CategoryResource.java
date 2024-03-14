@@ -1,6 +1,7 @@
 package com.curso.cursomc.resources;
 
 import com.curso.cursomc.domain.Category;
+import com.curso.cursomc.dto.CategoryDTO;
 import com.curso.cursomc.services.CategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/categories")
@@ -24,7 +26,6 @@ public class CategoryResource {
     public ResponseEntity<Category> find(@PathVariable Integer id){
         Category category = service.search(id);
         return ResponseEntity.ok().body(category);
-
     }
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Void> insert(@RequestBody Category category){
@@ -45,6 +46,12 @@ public class CategoryResource {
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);
         return ResponseEntity.noContent().build();
+    }
 
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<CategoryDTO>> findAll(){
+        List<Category> listCategories = service.findAll();
+        List<CategoryDTO> listCategoriesDTO = listCategories.stream().map( category -> new CategoryDTO(category)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listCategoriesDTO);
     }
 }
