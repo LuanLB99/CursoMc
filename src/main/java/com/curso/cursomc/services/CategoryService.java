@@ -1,6 +1,7 @@
 package com.curso.cursomc.services;
 
 import com.curso.cursomc.domain.Category;
+import com.curso.cursomc.dto.CategoryDTO;
 import com.curso.cursomc.repositories.CategoryRepository;
 import com.curso.cursomc.services.exceptions.DataIntegrityException;
 import com.curso.cursomc.services.exceptions.ObjectNotFoundException;
@@ -51,5 +52,9 @@ public class CategoryService {
     public Page<Category> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
         return  repo.findAll(pageRequest);
+    }
+
+    public Category fromDTO(CategoryDTO category){
+        return new Category(category.getId(), category.getName());
     }
 }

@@ -3,6 +3,7 @@ package com.curso.cursomc.resources;
 import com.curso.cursomc.domain.Category;
 import com.curso.cursomc.dto.CategoryDTO;
 import com.curso.cursomc.services.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,8 @@ public class CategoryResource {
         return ResponseEntity.ok().body(category);
     }
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> insert(@RequestBody Category category){
+    public ResponseEntity<Void> insert(@Valid @RequestBody CategoryDTO categoryDTO){
+        Category category = service.fromDTO(categoryDTO);
         category = service.insert(category);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri()
                 .path("/{id}").buildAndExpand(category.getId()).toUri();
@@ -37,7 +39,8 @@ public class CategoryResource {
         return ResponseEntity.created(uri).build();
     }
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public  ResponseEntity<Void> update(@RequestBody Category category, @PathVariable Integer id){
+    public  ResponseEntity<Void> update(@Valid @RequestBody CategoryDTO categoryDTO, @PathVariable Integer id){
+        Category category = service.fromDTO(categoryDTO);
         category.setId(id);
         Category updatedCategory = service.update(category);
         return ResponseEntity.noContent().build();
