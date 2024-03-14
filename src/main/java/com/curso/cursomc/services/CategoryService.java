@@ -20,9 +20,13 @@ public class CategoryService {
 
         return category.orElseThrow(() -> new ObjectNotFoundException("Categoria não encontrada! Id: " + id + ", Tipo: " + Category.class.getName()));
     }
-
     public Category insert(Category category){
         category.setId(null);
         return repo.save(category);
+    }
+
+    public  Category update(Category category){
+        search(category.getId());
+        return  repo.save(category);
     }
 }
