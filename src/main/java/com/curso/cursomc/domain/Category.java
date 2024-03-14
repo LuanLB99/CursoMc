@@ -1,6 +1,6 @@
 package com.curso.cursomc.domain;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +22,6 @@ public class Category implements Serializable {
     private  Integer id;
     private  String name;
 
-    @JsonManagedReference
     @ManyToMany(mappedBy = "categories")
     private List<Product> products = new ArrayList<>();
     public Category(Integer id, String name) {

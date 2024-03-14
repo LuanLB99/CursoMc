@@ -2,6 +2,7 @@ package com.curso.cursomc.domain;
 
 import com.curso.cursomc.domain.enums.ClientType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -31,7 +32,7 @@ public class Client implements Serializable {
     private String cpfOrCnpj;
     private Integer type;
 
-    @JsonManagedReference
+
     @OneToMany(mappedBy = "client")
     private List<Address> address = new ArrayList<>();
 
@@ -39,7 +40,7 @@ public class Client implements Serializable {
     @CollectionTable(name = "phone")
     private Set<String> phones = new HashSet<>();
 
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "client")
     private List<PurchaseOrder> purchaseOrders = new ArrayList<>();
 
