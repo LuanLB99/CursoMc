@@ -3,6 +3,7 @@ package com.curso.cursomc.resources;
 import com.curso.cursomc.domain.Category;
 import com.curso.cursomc.dto.CategoryDTO;
 import com.curso.cursomc.services.CategoryService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -53,5 +54,16 @@ public class CategoryResource {
         List<Category> listCategories = service.findAll();
         List<CategoryDTO> listCategoriesDTO = listCategories.stream().map( category -> new CategoryDTO(category)).collect(Collectors.toList());
         return ResponseEntity.ok().body(listCategoriesDTO);
+    }
+
+    @RequestMapping(value = "/page", method = RequestMethod.GET)
+    public ResponseEntity<Page<CategoryDTO>> findPage(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
+            @RequestParam(value = "orderBy", defaultValue = "name")String orderBy,
+            @RequestParam(value = "direction", defaultValue = "ASC")String direction){
+        Page<Category> listCategories = service.findPage(page, linesPerPage, orderBy, direction);
+        Page<CategoryDTO> listCategoriesDTOPage = listCategories.map( category -> new CategoryDTO(category));
+        return ResponseEntity.ok().body(listCategoriesDTOPage);
     }
 }
