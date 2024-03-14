@@ -3,11 +3,10 @@ package com.curso.cursomc.resources;
 import com.curso.cursomc.domain.Category;
 import com.curso.cursomc.services.CategoryService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +20,18 @@ public class CategoryResource {
         this.service = service;
     }
 
-    @GetMapping("/{id}")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Object> find(@PathVariable Integer id){
         Category category = service.search(id);
         return ResponseEntity.ok().body(category);
 
+    }
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Void> insert(@RequestBody Category category){
+        category = service.insert(category);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri()
+                .path("/{id}").buildAndExpand(category.getId()).toUri();
+
+        return ResponseEntity.created(uri).build();
     }
 }
