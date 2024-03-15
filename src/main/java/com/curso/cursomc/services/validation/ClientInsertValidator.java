@@ -1,16 +1,21 @@
 package com.curso.cursomc.services.validation;
 
+import com.curso.cursomc.domain.Client;
 import com.curso.cursomc.domain.enums.ClientType;
 import com.curso.cursomc.dto.NewClientDTO;
+import com.curso.cursomc.repositories.ClientRepository;
 import com.curso.cursomc.resources.exceptions.FieldMessage;
 import com.curso.cursomc.services.validation.utils.BR;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClientInsertValidator implements ConstraintValidator<ClientInsert, NewClientDTO> {
+    @Autowired
+    private ClientRepository repo;
     @Override
     public void initialize(ClientInsert ann) {
     }
@@ -25,6 +30,11 @@ public class ClientInsertValidator implements ConstraintValidator<ClientInsert, 
         if(newClientDTO.getType().equals(ClientType.PESSOAJURIDICA.getCod()) &&
                 !BR.isValidCNPJ(newClientDTO.getCpfOrCnpj())){
             list.add(new FieldMessage("cpfOuCnpj","CNPJ Inválido"));
+        }
+
+        Client clientByEmail = repo.findByEmail(newClientDTO.getEmail());
+        if (clientByEmail != null ){
+            list.add(new FieldMessage("email", "Email já cadastrado"));
         }
 
         for (FieldMessage e : list) {
