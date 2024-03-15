@@ -1,15 +1,20 @@
 package com.curso.cursomc.resources;
 
 
+import com.curso.cursomc.domain.Category;
 import com.curso.cursomc.domain.Client;
 
+import com.curso.cursomc.dto.CategoryDTO;
 import com.curso.cursomc.dto.ClientDTO;
+import com.curso.cursomc.dto.NewClientDTO;
 import com.curso.cursomc.services.ClientService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +31,16 @@ public class ClientResource {
     public ResponseEntity<Client> find(@PathVariable Integer id){
         Client client = service.search(id);
         return ResponseEntity.ok().body(client);
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Void> insert(@Valid @RequestBody NewClientDTO clientDTO){
+        Client client = service.fromDTO(clientDTO);
+        client = service.insert(client);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri()
+                .path("/{id}").buildAndExpand(client.getId()).toUri();
+
+        return ResponseEntity.created(uri).build();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)

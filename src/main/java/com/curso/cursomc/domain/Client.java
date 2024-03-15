@@ -33,7 +33,7 @@ public class Client implements Serializable {
     private Integer type;
 
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Address> address = new ArrayList<>();
 
     @ElementCollection
