@@ -2,7 +2,6 @@ package com.curso.cursomc.services;
 
 
 import com.curso.cursomc.domain.Client;
-import com.curso.cursomc.dto.CategoryDTO;
 import com.curso.cursomc.dto.ClientDTO;
 import com.curso.cursomc.repositories.ClientRepository;
 import com.curso.cursomc.services.exceptions.DataIntegrityException;
