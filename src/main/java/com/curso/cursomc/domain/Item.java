@@ -24,6 +24,10 @@ public class Item implements Serializable {
     private Integer quantity;
     private Double price;
 
+    public double getSubTotal(){
+        return (price - discount ) * quantity;
+    }
+
     public Item(PurchaseOrder purchaseOrder, Product product, Double discount, Integer quantity, Double price) {
         id.setPurchaseOrder(purchaseOrder);
         id.setProduct(product);
@@ -40,4 +44,7 @@ public class Item implements Serializable {
     public Product getProduct(){
         return id.getProduct();
     }
+
+
+
 }

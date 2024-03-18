@@ -47,6 +47,14 @@ public class PurchaseOrder implements Serializable {
         this.client = client;
         this.address = address;
     }
+    public double getTotalValue(){
+        double sum = 0.0;
+
+        for(Item ip : items){
+           sum = sum + ip.getSubTotal();
+        }
+        return sum;
+    }
 
     @Override
     public int hashCode(){
