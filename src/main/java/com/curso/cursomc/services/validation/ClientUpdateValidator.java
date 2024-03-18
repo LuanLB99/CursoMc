@@ -2,38 +2,40 @@ package com.curso.cursomc.services.validation;
 
 import com.curso.cursomc.domain.Client;
 import com.curso.cursomc.domain.enums.ClientType;
+import com.curso.cursomc.dto.ClientDTO;
 import com.curso.cursomc.dto.NewClientDTO;
 import com.curso.cursomc.repositories.ClientRepository;
 import com.curso.cursomc.resources.exceptions.FieldMessage;
 import com.curso.cursomc.services.validation.utils.BR;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.HandlerMapping;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class ClientInsertValidator implements ConstraintValidator<ClientInsert, NewClientDTO> {
+public class ClientUpdateValidator implements ConstraintValidator<ClientUpdate, ClientDTO> {
+
+    @Autowired
+    private HttpServletRequest request;
     @Autowired
     private ClientRepository repo;
     @Override
-    public void initialize(ClientInsert ann) {
+    public void initialize(ClientUpdate ann) {
     }
 
     @Override
-    public boolean isValid(NewClientDTO newClientDTO, ConstraintValidatorContext context) {
+    public boolean isValid(ClientDTO clientDTO, ConstraintValidatorContext context) {
+        Map<String, String> mapAtributtes = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+        Integer clientId = Integer.parseInt(mapAtributtes.get("id"));
         List<FieldMessage> list = new ArrayList<>();
-        if(newClientDTO.getType().equals(ClientType.PESSOAFISICA.getCod()) &&
-                !BR.isValidCPF(newClientDTO.getCpfOrCnpj())){
-            list.add(new FieldMessage("cpfOrCnpj","CPF Inválido"));
-        }
-        if(newClientDTO.getType().equals(ClientType.PESSOAJURIDICA.getCod()) &&
-                !BR.isValidCNPJ(newClientDTO.getCpfOrCnpj())){
-            list.add(new FieldMessage("cpfOrCnpj","CNPJ Inválido"));
-        }
 
-        Client clientByEmail = repo.findByEmail(newClientDTO.getEmail());
-        if (clientByEmail != null ){
+        Client clientByEmail = repo.findByEmail(clientDTO.getEmail());
+
+        if (clientByEmail != null && !clientByEmail.getId().equals(clientId)){
             list.add(new FieldMessage("email", "Email já cadastrado"));
         }
 

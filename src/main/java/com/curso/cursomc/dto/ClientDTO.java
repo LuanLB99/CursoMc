@@ -1,6 +1,7 @@
 package com.curso.cursomc.dto;
 
 import com.curso.cursomc.domain.Client;
+import com.curso.cursomc.services.validation.ClientUpdate;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
@@ -12,6 +13,7 @@ import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
+@ClientUpdate
 public class ClientDTO implements Serializable {
     @Serial
     private  static  final long serialVersionUID = 1L;
