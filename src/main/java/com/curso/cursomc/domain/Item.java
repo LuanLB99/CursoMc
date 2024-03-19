@@ -45,6 +45,12 @@ public class Item implements Serializable {
         return id.getProduct();
     }
 
+    public void setPurchaseOrder(PurchaseOrder purchaseOrder){
+        id.setPurchaseOrder(purchaseOrder);
+    }
 
+    public void setProduct(Product product){
+        id.setProduct(product);
+    }
 
 }

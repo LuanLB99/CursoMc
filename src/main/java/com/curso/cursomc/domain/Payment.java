@@ -3,6 +3,7 @@ package com.curso.cursomc.domain;
 import com.curso.cursomc.domain.enums.PaymentState;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 public abstract class Payment implements Serializable {
     @Serial
     private  static  final long serialVersionUID = 1L;
@@ -26,6 +28,7 @@ public abstract class Payment implements Serializable {
     @JoinColumn(name= "pedido_id")
     @MapsId
     private PurchaseOrder purchaseOrder;
+
 
     public Payment(Integer id, PaymentState state, PurchaseOrder purchaseOrder) {
         this.id = id;
