@@ -24,14 +24,20 @@ public class PurchaseOrderService {
     final private OrderedItemRepository orderedItemRepository;
     final private ProductService productService;
 
+    final private ClientService clientService;
+
+    final private EmailService emailService;
+
     public PurchaseOrderService(PurchaseOrderRepository purchaseOrderRepository, TicketService ticketService,
                                 PaymentRepository paymentRepository, ProductService productService,
-                                OrderedItemRepository orderedItemRepository) {
+                                OrderedItemRepository orderedItemRepository, ClientService clientService, EmailService emailService) {
         this.purchaseOrderRepository = purchaseOrderRepository;
         this.ticketService = ticketService;
         this.paymentRepository = paymentRepository;
         this.productService = productService;
         this.orderedItemRepository = orderedItemRepository;
+        this.clientService = clientService;
+        this.emailService = emailService;
     }
 
     public PurchaseOrder search(Integer id){
@@ -43,6 +49,7 @@ public class PurchaseOrderService {
     public PurchaseOrder insert(PurchaseOrder purchaseOrder){
         purchaseOrder.setId(null);
         purchaseOrder.setInstant(new Date());
+        purchaseOrder.setClient(clientService.search(purchaseOrder.getClient().getId()));
         purchaseOrder.getPayment().setPaymentState(PaymentState.PENDING);
         purchaseOrder.getPayment().setPurchaseOrder(purchaseOrder);
 
@@ -54,10 +61,12 @@ public class PurchaseOrderService {
         paymentRepository.save(purchaseOrder.getPayment());
         for(Item ip : purchaseOrder.getItems()){
             ip.setDiscount(0.0);
-            ip.setPrice(productService.search(ip.getProduct().getId()).getPrice());
+            ip.setProduct(productService.search(ip.getProduct().getId()));
+            ip.setPrice(ip.getProduct().getPrice());
             ip.setPurchaseOrder(purchaseOrder);
         }
         orderedItemRepository.saveAll(purchaseOrder.getItems());
+        emailService.sendOrderConfirmation(purchaseOrder);
         return purchaseOrder;
     }
 }

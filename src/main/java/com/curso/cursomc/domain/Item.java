@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 @Data
 @NoArgsConstructor
@@ -52,5 +54,24 @@ public class Item implements Serializable {
     public void setProduct(Product product){
         id.setProduct(product);
     }
+
+    @Override
+    public String toString() {
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(getProduct().getName());
+        builder.append(", Quantidade: ");
+        builder.append(getQuantity());
+        builder.append(", Preço unitário: ");
+        builder.append(numberFormat.format(getPrice()));
+        builder.append(", Subtotal: ");
+        builder.append(numberFormat.format(getSubTotal()));
+        builder.append("\n");
+
+        return builder.toString();
+    }
+
 
 }

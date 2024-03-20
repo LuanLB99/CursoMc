@@ -8,10 +8,9 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
@@ -60,4 +59,27 @@ public class PurchaseOrder implements Serializable {
     public int hashCode(){
         return Objects.hash(id);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        builder.append("Pedido número: ");
+        builder.append(getId());
+        builder.append(", Instante: ");
+        builder.append(dateFormat.format(getInstant()));
+        builder.append(" Cliente: ");
+        builder.append(getClient().getName());
+        builder.append(", Situação pagamento: ");
+        builder.append(getPayment().getState().getDescription());
+        builder.append("\nDetalhes: \n");
+        for (Item ip: getItems()){
+            builder.append(ip.toString());
+        }
+        builder.append("Valor total: ");
+        builder.append(numberFormat.format(getTotalValue()));
+        return builder.toString();
+    }
+
 }
