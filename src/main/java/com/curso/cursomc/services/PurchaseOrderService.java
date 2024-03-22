@@ -1,13 +1,12 @@
 package com.curso.cursomc.services;
 
-import com.curso.cursomc.domain.Client;
+
 import com.curso.cursomc.domain.Item;
 import com.curso.cursomc.domain.PaymentWithTicket;
 import com.curso.cursomc.domain.PurchaseOrder;
 import com.curso.cursomc.domain.enums.PaymentState;
 import com.curso.cursomc.repositories.OrderedItemRepository;
 import com.curso.cursomc.repositories.PaymentRepository;
-import com.curso.cursomc.repositories.ProductRepository;
 import com.curso.cursomc.repositories.PurchaseOrderRepository;
 import com.curso.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
@@ -23,9 +22,7 @@ public class PurchaseOrderService {
     final private PaymentRepository paymentRepository;
     final private OrderedItemRepository orderedItemRepository;
     final private ProductService productService;
-
     final private ClientService clientService;
-
     final private EmailService emailService;
 
     public PurchaseOrderService(PurchaseOrderRepository purchaseOrderRepository, TicketService ticketService,
@@ -66,7 +63,7 @@ public class PurchaseOrderService {
             ip.setPurchaseOrder(purchaseOrder);
         }
         orderedItemRepository.saveAll(purchaseOrder.getItems());
-        emailService.sendOrderConfirmation(purchaseOrder);
+       // emailService.sendOrderConfirmation(purchaseOrder);
         return purchaseOrder;
     }
 }

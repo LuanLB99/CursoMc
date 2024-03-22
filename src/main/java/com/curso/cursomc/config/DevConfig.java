@@ -1,6 +1,9 @@
 package com.curso.cursomc.config;
 
 import com.curso.cursomc.services.DBService;
+import com.curso.cursomc.services.EmailService;
+import com.curso.cursomc.services.MockEmailService;
+import com.curso.cursomc.services.SmtpEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -15,8 +18,8 @@ public class DevConfig {
 
     @Autowired
     private DBService dbService;
+    @Value("${spring.jpa.hibernate.ddl-auto}")
     private String strategy;
-    @Value("{spring.jpa.hibernate.ddl-auto}")
 
 
     @Bean
@@ -27,5 +30,10 @@ public class DevConfig {
 
         dbService.instantiateDataBase();
         return true;
+    }
+
+    @Bean
+    public EmailService emailService(){
+        return new SmtpEmailService();
     }
 }
