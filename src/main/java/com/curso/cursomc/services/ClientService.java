@@ -11,10 +11,12 @@ import com.curso.cursomc.repositories.AddressRepository;
 import com.curso.cursomc.repositories.ClientRepository;
 import com.curso.cursomc.services.exceptions.DataIntegrityException;
 import com.curso.cursomc.services.exceptions.ObjectNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,9 @@ public class ClientService {
     final ClientRepository repo;
 
     final AddressRepository addressRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     public ClientService(ClientRepository repo, AddressRepository addressRepository) {
         this.repo = repo;
@@ -70,12 +75,12 @@ public class ClientService {
     }
 
     public Client fromDTO(ClientDTO clientDTO){
-        return new Client(clientDTO.getId(), clientDTO.getName(), clientDTO.getEmail(), null, null );
+        return new Client(clientDTO.getId(), clientDTO.getName(), clientDTO.getEmail(), null, null, null );
     }
 
     public Client fromDTO(NewClientDTO clientDTO){
         Client cli = new Client(null, clientDTO.getName(), clientDTO.getEmail(),
-                clientDTO.getCpfOrCnpj(), ClientType.toEnum(clientDTO.getType()));
+                clientDTO.getCpfOrCnpj(), ClientType.toEnum(clientDTO.getType()), passwordEncoder.encode(clientDTO.getPassword()));
 
         City city = new City(clientDTO.getCityId(), null, null);
         Address add = new Address(null, clientDTO.getLogradouro(), clientDTO.getNumero(),

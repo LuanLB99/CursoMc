@@ -26,6 +26,8 @@ public class NewClientDTO  implements Serializable {
     @NotEmpty(message = "Preenchimento obrigatório")
     private String cpfOrCnpj;
     private Integer type;
+    @NotEmpty(message = "Preenchimento obrigatório")
+    private String password;
 
     @NotEmpty(message = "Preenchimento obrigatório")
     private String logradouro;

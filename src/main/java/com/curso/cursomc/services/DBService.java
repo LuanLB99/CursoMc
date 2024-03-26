@@ -3,7 +3,9 @@ package com.curso.cursomc.services;
 import com.curso.cursomc.domain.*;
 import com.curso.cursomc.domain.enums.ClientType;
 import com.curso.cursomc.domain.enums.PaymentState;
+import com.curso.cursomc.domain.enums.Profile;
 import com.curso.cursomc.repositories.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -26,11 +28,13 @@ public class DBService {
 
     final OrderedItemRepository orderedItemRepository;
 
+    final BCryptPasswordEncoder passwordEncoder;
+
     public DBService(CategoryRepository categoryRepository, ProductRepository productRepository,
                               StateRepository stateRepository, CityRepository cityRepository,
                               ClientRepository clientRepository, AddressRepository addressRepository,
                               PurchaseOrderRepository purchaseOrderRepository, PaymentRepository paymentRepository,
-                              OrderedItemRepository orderedItemRepository) {
+                              OrderedItemRepository orderedItemRepository, BCryptPasswordEncoder passwordEncoder) {
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
         this.stateRepository = stateRepository;
@@ -40,6 +44,7 @@ public class DBService {
         this.purchaseOrderRepository = purchaseOrderRepository;
         this.paymentRepository = paymentRepository;
         this.orderedItemRepository = orderedItemRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void instantiateDataBase() throws ParseException {
@@ -101,14 +106,20 @@ public class DBService {
         cityRepository.saveAll(Arrays.asList(cit1,cit2,cit3));
 
 
-        Client cli1 = new Client(null, "Maria Silva", "luanlealboni@gmail.com", "36378912377", ClientType.PESSOAFISICA);
+        Client cli1 = new Client(null, "Maria Silva", "maria@gmail.com", "36378912377", ClientType.PESSOAFISICA, passwordEncoder.encode("123") );
         cli1.getPhones().addAll(Arrays.asList("27363323", "93838393"));
+        Client cli2 = new Client(null, "Luan Leal", "luan@gmail.com", "51207937037", ClientType.PESSOAFISICA, passwordEncoder.encode("321") );
+        cli2.addProfile(Profile.ADMIN);
+        cli1.getPhones().addAll(Arrays.asList("27363324", "67838393"));
 
         Address add1 = new Address(null, "Rua das Flores","300", "Apto 203","Jardim", "38220834", cli1, cit1);
         Address add2 = new Address(null, "Avenida Matos","105", "Sala 800","Centro", "38777012", cli1, cit2);
+        Address add3 = new Address(null, "Avenida Floriano","2106", "Apt 02","Botânico", "38777021", cli2, cit1);
+
         cli1.getAddress().addAll(Arrays.asList(add1,add2));
-        clientRepository.save(cli1);
-        addressRepository.saveAll(Arrays.asList(add1,add2));
+        cli2.getAddress().addAll(Arrays.asList(add3));
+        clientRepository.saveAll(Arrays.asList(cli1,cli2));
+        addressRepository.saveAll(Arrays.asList(add1,add2, add3));
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         PurchaseOrder ped1 = new PurchaseOrder(null,dateFormat.parse("30/09/2017 10:32"), cli1, add1);
