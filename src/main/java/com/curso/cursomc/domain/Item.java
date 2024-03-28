@@ -2,9 +2,6 @@ package com.curso.cursomc.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serial;
@@ -113,7 +110,6 @@ public class Item implements Serializable {
             return false;
         return true;
     }
-
 
     @Override
     public String toString() {

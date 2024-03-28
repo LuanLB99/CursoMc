@@ -3,17 +3,19 @@ package com.curso.cursomc.services;
 import com.curso.cursomc.domain.PurchaseOrder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.stereotype.Service;
 
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+
 @Service
+
+
+
 public abstract class AbstractEmailService implements EmailService{
     @Value("${default.sender}")
     private String sender;
-
-
     @Override
     public void sendOrderConfirmation(PurchaseOrder purchaseOrder) {
         SimpleMailMessage sm = prepareSimpleMailMessageFromPurchaseOrder(purchaseOrder);

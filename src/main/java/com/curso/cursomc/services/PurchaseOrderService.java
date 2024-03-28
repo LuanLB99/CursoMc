@@ -25,6 +25,7 @@ public class PurchaseOrderService {
     final private ClientService clientService;
     final private EmailService emailService;
 
+
     public PurchaseOrderService(PurchaseOrderRepository purchaseOrderRepository, TicketService ticketService,
                                 PaymentRepository paymentRepository, ProductService productService,
                                 OrderedItemRepository orderedItemRepository, ClientService clientService, EmailService emailService) {
@@ -63,7 +64,9 @@ public class PurchaseOrderService {
             ip.setPurchaseOrder(purchaseOrder);
         }
         orderedItemRepository.saveAll(purchaseOrder.getItems());
+
        // emailService.sendOrderConfirmation(purchaseOrder);
+
         return purchaseOrder;
     }
 }

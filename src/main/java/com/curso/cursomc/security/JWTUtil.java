@@ -34,6 +34,7 @@ public class JWTUtil {
             if(username != null && expirationDate != null && now.before(expirationDate)){
                 return true;
             }
+
         }
         return false;
     }

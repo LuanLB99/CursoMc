@@ -10,5 +10,4 @@ public interface EmailService {
     void sendOrderConfirmation(PurchaseOrder purchaseOrder);
 
     void sendMail(SimpleMailMessage msg);
-
 }
