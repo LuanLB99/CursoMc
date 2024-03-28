@@ -5,10 +5,13 @@ import com.curso.cursomc.domain.Address;
 import com.curso.cursomc.domain.City;
 import com.curso.cursomc.domain.Client;
 import com.curso.cursomc.domain.enums.ClientType;
+import com.curso.cursomc.domain.enums.Profile;
 import com.curso.cursomc.dto.ClientDTO;
 import com.curso.cursomc.dto.NewClientDTO;
 import com.curso.cursomc.repositories.AddressRepository;
 import com.curso.cursomc.repositories.ClientRepository;
+import com.curso.cursomc.security.UserSS;
+import com.curso.cursomc.services.exceptions.AuthorizationException;
 import com.curso.cursomc.services.exceptions.DataIntegrityException;
 import com.curso.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +41,12 @@ public class ClientService {
     }
 
     public Client search(Integer id){
+        UserSS user = UserService.authenticated();
+
+        if(user == null || !user.hasRole(Profile.ADMIN) && !id.equals(user.getId())){
+            throw new AuthorizationException("Acesso negado");
+        }
+
         Optional<Client> client =  repo.findById(id);
 
         return client.orElseThrow(() -> new ObjectNotFoundException("Categoria não encontrada! Id: " + id + ", Tipo: " + Client.class.getName()));
