@@ -1,6 +1,7 @@
 package com.curso.cursomc.services;
 
 
+import com.curso.cursomc.domain.Client;
 import com.curso.cursomc.domain.Item;
 import com.curso.cursomc.domain.PaymentWithTicket;
 import com.curso.cursomc.domain.PurchaseOrder;
@@ -8,7 +9,12 @@ import com.curso.cursomc.domain.enums.PaymentState;
 import com.curso.cursomc.repositories.OrderedItemRepository;
 import com.curso.cursomc.repositories.PaymentRepository;
 import com.curso.cursomc.repositories.PurchaseOrderRepository;
+import com.curso.cursomc.security.UserSS;
+import com.curso.cursomc.services.exceptions.AuthorizationException;
 import com.curso.cursomc.services.exceptions.ObjectNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -68,5 +74,16 @@ public class PurchaseOrderService {
        // emailService.sendOrderConfirmation(purchaseOrder);
 
         return purchaseOrder;
+    }
+
+    public Page<PurchaseOrder> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        UserSS user = UserService.authenticated();
+        if(user == null) {
+            throw new AuthorizationException("Acesso negado");
+        }
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        Client client = clientService.search(user.getId());
+
+        return purchaseOrderRepository.findByClient(client, pageRequest);
     }
 }

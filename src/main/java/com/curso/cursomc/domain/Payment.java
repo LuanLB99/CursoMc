@@ -1,7 +1,6 @@
 package com.curso.cursomc.domain;
 
 import com.curso.cursomc.domain.enums.PaymentState;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import javax.persistence.*;
