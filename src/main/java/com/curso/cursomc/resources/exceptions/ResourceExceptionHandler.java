@@ -2,7 +2,7 @@ package com.curso.cursomc.resources.exceptions;
 
 import com.curso.cursomc.services.exceptions.DataIntegrityException;
 import com.curso.cursomc.services.exceptions.ObjectNotFoundException;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

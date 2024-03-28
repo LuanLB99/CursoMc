@@ -1,18 +1,14 @@
 package com.curso.cursomc.services.validation;
 
 import com.curso.cursomc.domain.Client;
-import com.curso.cursomc.domain.enums.ClientType;
 import com.curso.cursomc.dto.ClientDTO;
-import com.curso.cursomc.dto.NewClientDTO;
 import com.curso.cursomc.repositories.ClientRepository;
 import com.curso.cursomc.resources.exceptions.FieldMessage;
-import com.curso.cursomc.services.validation.utils.BR;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerMapping;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

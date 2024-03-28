@@ -5,11 +5,12 @@ import com.curso.cursomc.domain.enums.Profile;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class Client implements Serializable {
     @CollectionTable(name = "phone")
     private Set<String> phones = new HashSet<>();
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "profiles")
     private Set<Integer> profiles = new HashSet<>();
 

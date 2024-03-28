@@ -1,8 +1,6 @@
 package com.curso.cursomc.domain;
 
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import javax.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

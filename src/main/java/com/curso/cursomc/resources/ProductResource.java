@@ -1,13 +1,9 @@
 package com.curso.cursomc.resources;
 
-import com.curso.cursomc.domain.Category;
 import com.curso.cursomc.domain.Product;
-import com.curso.cursomc.domain.PurchaseOrder;
-import com.curso.cursomc.dto.CategoryDTO;
 import com.curso.cursomc.dto.ProductDTO;
 import com.curso.cursomc.resources.utils.URL;
 import com.curso.cursomc.services.ProductService;
-import com.curso.cursomc.services.PurchaseOrderService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

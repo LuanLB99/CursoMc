@@ -1,10 +1,8 @@
 package com.curso.cursomc.resources;
 
-import com.curso.cursomc.domain.Category;
 import com.curso.cursomc.domain.PurchaseOrder;
-import com.curso.cursomc.dto.CategoryDTO;
 import com.curso.cursomc.services.PurchaseOrderService;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;

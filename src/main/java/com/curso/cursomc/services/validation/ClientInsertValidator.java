@@ -6,8 +6,8 @@ import com.curso.cursomc.dto.NewClientDTO;
 import com.curso.cursomc.repositories.ClientRepository;
 import com.curso.cursomc.resources.exceptions.FieldMessage;
 import com.curso.cursomc.services.validation.utils.BR;
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
