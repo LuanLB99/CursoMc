@@ -1,5 +1,6 @@
 package com.curso.cursomc.services;
 
+import com.curso.cursomc.domain.Client;
 import com.curso.cursomc.domain.PurchaseOrder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -20,6 +21,23 @@ public abstract class AbstractEmailService implements EmailService{
     public void sendOrderConfirmation(PurchaseOrder purchaseOrder) {
         SimpleMailMessage sm = prepareSimpleMailMessageFromPurchaseOrder(purchaseOrder);
         sendMail(sm);
+    }
+
+    @Override
+    public void sendNewPasswordEmail(Client client, String newPass) {
+        SimpleMailMessage sm = prepareNewPassword(client, newPass);
+        sendMail(sm);
+    }
+
+    protected SimpleMailMessage prepareNewPassword(Client client, String newPass) {
+        SimpleMailMessage sm = new SimpleMailMessage();
+        sm.setTo(client.getEmail());
+        sm.setFrom(sender);
+        sm.setSubject("Senha alterada com sucesso!" );
+        sm.setSentDate(new Date(System.currentTimeMillis()));
+        sm.setText("Nova senha " + newPass);
+
+        return sm;
     }
 
     protected SimpleMailMessage prepareSimpleMailMessageFromPurchaseOrder(PurchaseOrder purchaseOrder) {

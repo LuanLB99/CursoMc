@@ -1,8 +1,6 @@
 package com.curso.cursomc.resources;
 
-import com.curso.cursomc.domain.Category;
 import com.curso.cursomc.domain.PurchaseOrder;
-import com.curso.cursomc.dto.CategoryDTO;
 import com.curso.cursomc.services.PurchaseOrderService;
 import javax.validation.Valid;
 
