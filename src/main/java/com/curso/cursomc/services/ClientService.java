@@ -15,6 +15,7 @@ import com.curso.cursomc.services.exceptions.AuthorizationException;
 import com.curso.cursomc.services.exceptions.DataIntegrityException;
 import com.curso.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +41,12 @@ public class ClientService {
 
     @Autowired
     private S3Services s3Services;
+
+    @Autowired
+    private ImageService imageService;
+
+    @Value("${img.prefix.client.profile}")
+    private String prefix;
 
     public ClientService(ClientRepository repo, AddressRepository addressRepository) {
         this.repo = repo;
@@ -117,6 +125,12 @@ public class ClientService {
     }
 
     public URI uploadProfilePicture(MultipartFile multipartFile){
-        return s3Services.uploadFile(multipartFile);
+        UserSS user = UserService.authenticated();
+        if(user == null) {
+            throw new AuthorizationException("Usuário não logado!");
+        }
+        BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+        String fileName = prefix + user.getId() + ".jpg";
+        return s3Services.uploadFile(imageService.getInputStream(jpgImage,"jpg"), fileName, "image");
     }
 }
